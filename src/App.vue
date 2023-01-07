@@ -19,48 +19,53 @@ import TheWelcome from "./components/TheWelcome.vue";
             </tr>
           </thead>
           <tbody>
+            <!-- v-for item(自行取名稱) in products(對應data資料) 並取得對應的產品id ，用bind 綁定key屬性 -->
             <tr v-for ="item in products" v-bind:key="item.id">
               <td width="150">{{item.title}}</td>
               <td width="120">{{item.origin_price}}</td>
               <td width="120">{{item.price}}</td>
               <td width="150">
-                <span class="text-success">啟用</span>
-                <span>未啟用</span>
+                <span class="text-success" v-if="item.is_enabled">啟用</span>
+                <span v-else>未啟用</span>
               </td>
               <td width="120">
-                <button type="button" class="btn btn-primary">查看細節</button>
+                <!-- data資料新增暫存商品區，當按下按鈕時，將對應商品加入暫存商品區tempProduct -->
+                <button type="button" class="btn btn-primary" v-on:click="tempProduct = item">查看細節</button> 
               </td>
             </tr>
           </tbody>
         </table>
+        <!-- 用產品列表資料長度抓出比數 -->
         <p>目前有 <span>{{products.length}}</span> 項產品</p>
       </div>
       <div class="col-md-6">
         <h2>單一產品細節</h2>
-        <template>
+        <!-- 用tempProduct.title找出對應商品 -->
+        <template v-if="tempProduct.title">
           <div class="card mb-3">
-            <img src="" class="card-img-top primary-image" alt="主圖" />
+            <img :src="tempProduct.imageUrl" class="card-img-top primary-image" alt="主圖" />
             <div class="card-body">
               <h5 class="card-title">
-                {{}}
-                <span class="badge bg-primary ms-2">{{}}</span>
+                {{tempProduct.title}}
+                <span class="badge bg-primary ms-2">{{tempProduct.category}}</span>
               </h5>
-              <p class="card-text">商品描述：{{}}</p>
-              <p class="card-text">商品內容：{{}}</p>
+              <p class="card-text">商品描述：{{tempProduct.description}}</p>
+              <p class="card-text">商品內容：{{tempProduct.content}}</p>
               <div class="d-flex">
-                <p class="card-text me-2">{{}}</p>
+                <p class="card-text me-2">{{tempProduct.price}}</p>
                 <p class="card-text text-secondary">
-                  <del>{{}}</del>
+                  <del>{{tempProduct.origin_price}}</del>
                 </p>
-                元 / {{}}
+                元 / {{tempProduct.unit}}
               </div>
             </div>
           </div>
-          <template>
-            <img src="" alt="" class="images m-2" />
+          <!-- v-for 將圖片一次匯出 -->
+          <template v-for="(image,id) in tempProduct.imagesUrl" :key="id">
+            <img :src="image" alt="" class="images m-2" />
           </template>
         </template>
-        <p class="text-secondary">請選擇一個商品查看</p>
+        <p v-else class="text-secondary" >請選擇一個商品查看</p>
       </div>
     </div>
   </div>
@@ -70,7 +75,6 @@ import TheWelcome from "./components/TheWelcome.vue";
 export default {
   data() {
     return {
-      text: "這是卡斯柏建立的Vue",
       products: [
         {
           category: "甜甜圈",
@@ -128,6 +132,7 @@ export default {
           ],
         },
       ],
+      tempProduct:{},
     };
   },
 };
