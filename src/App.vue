@@ -3,8 +3,8 @@ import HelloWorld from "./components/HelloWorld.vue";
 import TheWelcome from "./components/TheWelcome.vue";
 </script>
 
-<template>
-  <div class="container">
+<template >
+  <div class="container" >
     <div class="row py-3">
       <div class="col-md-6">
         <h2>產品列表</h2>
@@ -19,10 +19,10 @@ import TheWelcome from "./components/TheWelcome.vue";
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td width="150">{{}}</td>
-              <td width="120">{{}}</td>
-              <td width="120">{{}}</td>
+            <tr v-for ="item in products" v-bind:key="item.id">
+              <td width="150">{{item.title}}</td>
+              <td width="120">{{item.origin_price}}</td>
+              <td width="120">{{item.price}}</td>
               <td width="150">
                 <span class="text-success">啟用</span>
                 <span>未啟用</span>
@@ -33,7 +33,7 @@ import TheWelcome from "./components/TheWelcome.vue";
             </tr>
           </tbody>
         </table>
-        <p>目前有 <span>{{}}</span> 項產品</p>
+        <p>目前有 <span>{{products.length}}</span> 項產品</p>
       </div>
       <div class="col-md-6">
         <h2>單一產品細節</h2>
